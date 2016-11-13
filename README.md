@@ -17,3 +17,35 @@
    ```
    sudo -i
    ```
+5. Create projects directory
+
+   ```
+   cd /
+   mkdir projects
+   chmod 777 ./projects
+6. exit out of root
+
+   ```
+   exit
+   ```
+7. Change to projects directory
+
+   ```
+   cd /projects
+   ```
+8. cloan repository
+
+   ```
+   git clone https://github.com/dstrower/dragonboardSensor
+   git remote add origin git@https://github.com/dstrower/dragonboardSensor
+   ```
+9. change to scripts directory
+
+   ```
+   cd /projects/dragonboardSensor/scripts
+   '''
+10. Update Debain
+
+   ```
+   ./updateDebian.sh
+   ```
