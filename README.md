@@ -23,6 +23,7 @@
    cd /
    mkdir projects
    chmod 777 ./projects
+   ```
 6. exit out of root
 
    ```
