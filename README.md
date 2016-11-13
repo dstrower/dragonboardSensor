@@ -44,7 +44,7 @@
 
    ```
    cd /projects/dragonboardSensor/scripts
-   '''
+   ```
 10. Update Debain
 
    ```
