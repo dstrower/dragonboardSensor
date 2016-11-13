@@ -10,7 +10,7 @@
    You will be promoted for new UNIX password. Write it down.
    Then execute
    ```
-   sudo -passwd -u root
+   sudo passwd -u root
    ```
 4. sudo to root
 
@@ -38,7 +38,6 @@
 
    ```
    git clone https://github.com/dstrower/dragonboardSensor
-   git remote add origin git@https://github.com/dstrower/dragonboardSensor
    ```
 9. change to scripts directory
 
