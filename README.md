@@ -1,5 +1,5 @@
 # dragonboardSensor
-Dragonboard Sensor Mezzanine
+## Dragonboard Sensor Mezzanine
 1. Add debain UNIX
 2. Connect to network
 3. Add root user
