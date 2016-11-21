@@ -50,10 +50,27 @@
    ./updateDebian.sh
    ```
 11. Install extra tool packages
+
    ```
    ./installTools.sh
    ```
 12. Install MRAA library
+
    ```
    ./installMRAA.sh
+   ```
+13. Install UP library. Please be patient, this will take about 30 minutes.
+
+   ```
+   ./instalUPM.sh
+   ```
+14. Configure software.
+
+   ```
+   ./configureSoftware.sh
+   ```
+15. Reboot System to get the changes.
+
+   ```
+   sudo reboot
    ```
