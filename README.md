@@ -49,3 +49,11 @@
    ```
    ./updateDebian.sh
    ```
+11. Install extra tool packages
+   ```
+   ./installTools.sh
+   ```
+12. Install MRAA library
+   ```
+   ./installMRAA.sh
+   ```
