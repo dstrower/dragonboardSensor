@@ -76,3 +76,18 @@
    ```
    sudo reboot
    ```
+16. Now get the sample code
+ 
+   ```
+   cd /projects/dragonboardSensors
+   cd sample
+   ./getFiles.sh
+   ```
+17. Run one experiment
+
+  ```
+  cd Starter_Kit_for_96Boards
+  cd rgb_lcd_demo
+  make
+  ```
+   
