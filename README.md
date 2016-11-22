@@ -1,6 +1,7 @@
 # dragonboardSensor
 ## Dragonboard Sensor Mezzanine
 1. Add debain UNIX
+[Install UNIX] (http://www.96boards.org/documentation/ConsumerEdition/DragonBoard-410c/Downloads/Debian.md/)
 2. Connect to network
 3. Add root user
 
@@ -59,7 +60,7 @@
    ```
    ./installMRAA.sh
    ```
-13. Install UP library. Please be patient, this will take about 30 minutes.
+13. Install UPM library. Please be patient, this will take about 30 minutes.
 
    ```
    ./instalUPM.sh
