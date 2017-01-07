@@ -83,10 +83,20 @@
    cd sample
    ./getFiles.sh
    ```
+   
+17. Patch some of the files.
+
+   ```
+   cd /projects/dragonboardSensors
+   cd sample
+   ./patchFiles.sh
+   ```
+   
 17. Run one experiment
 
   ```
-  cd Starter_Kit_for_96Boards
+  cd /projects/dragonboardSensors
+  cd sample/Starter_Kit_for_96Boards
   cd rgb_lcd_demo
   make
   ```
