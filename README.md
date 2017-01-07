@@ -64,12 +64,12 @@
 13. Install UPM library. Please be patient, this will take about 30 minutes.
 
    ```
-   ./instalUPM.sh
+   ./installUPM.sh
    ```
 14. Configure software.
 
    ```
-   ./configureSoftware.sh
+   ./configSoftware.sh
    ```
 15. Reboot System to get the changes.
 
