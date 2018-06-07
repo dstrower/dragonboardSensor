@@ -20,6 +20,11 @@
    ```
    sudo -i
    ```
+5. Make sure board has the correct time.
+
+   ```
+   ntpdate pool.ntp.org
+   ```
 5. Create projects directory
 
    ```
@@ -93,7 +98,7 @@
    ./patchFiles.sh
    ```
    
-17. Run one experiment
+18. Run one experiment
 
   ```
   cd /projects/dragonboardSensors
