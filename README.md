@@ -23,87 +23,23 @@
 5. Make sure board has the correct time.
 
    ```
-   ntpdate pool.ntp.org
-   ```
-5. Create projects directory
-
-   ```
-   cd /
-   mkdir projects
-   chmod 777 ./projects
+   ntpdate pool.ntp.org   
    ```
 6. exit out of root
 
    ```
    exit
    ```
-7. Change to projects directory
+7. Add a fix before updating debain.
 
    ```
-   cd /projects
+   sudo apt-mark hold linux-image-4.14.0-qcomlt-arm64
    ```
-8. cloan repository
-
-   ```
-   git clone https://github.com/dstrower/dragonboardSensor
-   ```
-9. change to scripts directory
-
-   ```
-   cd /projects/dragonboardSensor/scripts
-   ```
-10. Update Debain
-
-   ```
-   ./updateDebian.sh
-   ```
-11. Install extra tool packages
-
-   ```
-   ./installTools.sh
-   ```
-12. Install MRAA library
-
-   ```
-   ./installMRAA.sh
-   ```
-13. Install UPM library. Please be patient, this will take about 30 minutes.
-
-   ```
-   ./installUPM.sh
-   ```
-14. Configure software.
-
-   ```
-   ./configSoftware.sh
-   ```
-15. Reboot System to get the changes.
-
-   ```
-   sudo reboot
-   ```
-16. Now get the sample code
- 
-   ```
-   cd /projects/dragonboardSensors
-   cd sample
-   ./getFiles.sh
-   ```
+  [To see why this step is needed] (https://discuss.96boards.org/t/no-network-devices-available-after-updating-debian/4954/4)
    
-17. Patch some of the files.
+8. Start following instructions starting on step 6.
 
-   ```
-   cd /projects/dragonboardSensors
-   cd sample
-   ./patchFiles.sh
-   ```
-   
-18. Run one experiment
+  [Steps (Start on 6)] (https://github.com/96boards/Sensor_Mezzanine_Getting_Started/blob/master/README.md)
+  
 
-  ```
-  cd /projects/dragonboardSensors
-  cd sample/Starter_Kit_for_96Boards
-  cd rgb_lcd_demo
-  make
-  ```
    
