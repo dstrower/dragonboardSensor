@@ -41,11 +41,7 @@
 
   [Steps (Start on 6)] (https://github.com/96boards/Sensor_Mezzanine_Getting_Started/blob/master/README.md)
   
-9. Install java
 
-  ```
-  sudo apt-get install default-jdk
-  ```
   
 
    
