@@ -2,7 +2,7 @@
 ## Dragonboard Sensor Mezzanine
 1. Add debain UNIX
 
-  [Install UNIX] (http://www.96boards.org/documentation/ConsumerEdition/DragonBoard-410c/Downloads/Debian.md/)
+  [Install UNIX] (https://www.96boards.org/documentation/consumer/dragonboard/dragonboard410c/installation/mac-sd.md.html)
   
 2. Connect to network
 3. Add root user
