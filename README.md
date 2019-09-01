@@ -30,17 +30,23 @@
    ```
    exit
    ```
-7. Add a fix before updating debain.
-
-   ```
-   sudo apt-mark hold linux-image-4.14.0-qcomlt-arm64
-   ```
-  [To see why this step is needed] (https://discuss.96boards.org/t/no-network-devices-available-after-updating-debian/4954/4)
    
 8. Start following instructions starting on step 6.
 
   [Steps (Start on 6)] (https://github.com/96boards/Sensor_Mezzanine_Getting_Started/blob/master/README.md)
   
+  
+9. Add java mraa package
+
+```
+sudo apt-get install libmraa-java
+```
+  
+ 10. Add java based upm package
+ 
+ ```
+sudo apt-get install libupm-java
+```
 
   
 
