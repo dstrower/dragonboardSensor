@@ -1,3 +1,4 @@
+
 /*
  * Author: Jon Trulson <jtrulson@ics.com>
  * Copyright (c) 2016-2017 Intel Corporation.
@@ -26,63 +27,44 @@ import java.util.AbstractList;
 
 import upm_lsm6ds3h.*;
 
-public class ShowAngle
-{
-    public static void main(String[] args) throws InterruptedException
-    {
-// ! [Interesting]
+public class ShowAngle {
+	public static void main(String[] args) throws InterruptedException {
+		// ! [Interesting]
+		long thousand = 1000;
 
-        // Instantiate a LSM6DS3H instance using default i2c bus and address
-        LSM6DS3H sensor = new LSM6DS3H();
+		// Instantiate a LSM6DS3H instance using default i2c bus and address
+		LSM6DS3H sensor = new LSM6DS3H();
 
-        // For SPI, bus 0, you would pass -1 as the address, and a
-        // valid pin for CS:
-        // LSM6DS3H(0, -1, 10);
-        float theta_x = 0;
-        float theta_y = 0;
-        float theta_z = 0;
+		// For SPI, bus 0, you would pass -1 as the address, and a
+		// valid pin for CS:
+		// LSM6DS3H(0, -1, 10);
+		float theta_x = 0;
+		float theta_y = 0;
+		float theta_z = 0;
+		long lastTime = 0;
+		while (true) {
+			// update our values from the sensor
+			sensor.update();
 
-        while (true)
-            {
-                // update our values from the sensor
-                sensor.update();
+			floatVector data = sensor.getAccelerometer();
 
-                floatVector data = sensor.getAccelerometer();
+			data = sensor.getGyroscope();
+			long currentTime = System.currentTimeMillis();
+			float dx = data.get(0);
+			float dy = data.get(1);
+			float dz = data.get(2);
+			if (lastTime > 0) {
+				long deltaTime = (currentTime - lastTime)/thousand;
+				theta_x = theta_x + dx*deltaTime;
+				theta_y = theta_y + dy*deltaTime;
+				theta_z = theta_z + dz*deltaTime;
+			}
+            lastTime = currentTime;
+			System.out.println("Gyroscope x: " + theta_x + " y: " + theta_y + " z: " + theta_z + " degrees");
 
-                //
-		//System.out.println("Accelerometer x: " + data.get(0)
-                                   //+ " y: " + data.get(1)
-                                   //+ " z: " + data.get(2)
-                                   //+ " g");
+			Thread.sleep(100);
+		}
 
-                data = sensor.getGyroscope();
-                float dx = data.get(0);
-                float dy = data.get(1);
-		float dz = data.get(2);
-		theta_x = theta_x + dx;
-		theta_y = theta_y + dy;
-		theta_z = theta_z + dz;
-
-                System.out.println("Gyroscope x: " + theta_x
-                                   + " y: " + theta_y
-                                   + " z: " + theta_z
-                                   + " degrees");
-
-                //
-		//System.out.println("Compensation Temperature: "
-                                   //
-				   //+ sensor.getTemperature()
-                                   //
-				   //+ " C / "
-                                   //
-				   //+ sensor.getTemperature(true)
-                                   //
-				   //+ " F");
-
-                System.out.println();
-                Thread.sleep(100);
-            }
-
-// ! [Interesting]
-    }
+		// ! [Interesting]
+	}
 }
