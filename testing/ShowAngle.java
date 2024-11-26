@@ -30,7 +30,7 @@ import upm_lsm6ds3h.*;
 public class ShowAngle {
 	public static void main(String[] args) throws InterruptedException {
 		// ! [Interesting]
-		long thousand = 1000;
+		double thousand = 1000;
 
 		// Instantiate a LSM6DS3H instance using default i2c bus and address
 		LSM6DS3H sensor = new LSM6DS3H();
@@ -38,10 +38,19 @@ public class ShowAngle {
 		// For SPI, bus 0, you would pass -1 as the address, and a
 		// valid pin for CS:
 		// LSM6DS3H(0, -1, 10);
-		float theta_x = 0;
-		float theta_y = 0;
-		float theta_z = 0;
+		double theta_x = 0;
+		double theta_y = 0;
+		double theta_z = 0;
 		long lastTime = 0;
+		long displayTime = 1000;
+		long lastDisplay = 0;
+		double samples = 0;
+		double avg_dx =  0;
+		double avg_dy =  0;
+		double avg_dz =  0;
+		double sum_dx =  0;
+		double sum_dy =  0;
+		double sum_dz =  0;
 		while (true) {
 			// update our values from the sensor
 			sensor.update();
@@ -53,15 +62,36 @@ public class ShowAngle {
 			float dx = data.get(0);
 			float dy = data.get(1);
 			float dz = data.get(2);
+			samples = samples + 1;
 			if (lastTime > 0) {
-				long deltaTime = (currentTime - lastTime)/thousand;
-				theta_x = theta_x + dx*deltaTime;
-				theta_y = theta_y + dy*deltaTime;
-				theta_z = theta_z + dz*deltaTime;
+				double double_dx = (double)dx;
+				double double_dy = (double)dy;
+				double double_dz = (double)dz;
+		                sum_dx = sum_dx + double_dx;
+		                avg_dx = sum_dx/samples;	
+		                sum_dy = sum_dy + double_dy;
+		                avg_dy = sum_dy/samples;	
+		                sum_dz = sum_dz + double_dz;
+		                avg_dz = sum_dz/samples;	
+				double_dx = double_dx - avg_dx;
+				double_dy = double_dy - avg_dy;
+				double_dz = double_dz - avg_dz;
+				double deltaTime = (currentTime - lastTime)/thousand;
+				theta_x = theta_x + (double)double_dx*deltaTime;
+				theta_y = theta_y + (double)double_dy*deltaTime;
+				theta_z = theta_z + (double)double_dz*deltaTime;
+				//System.out.println("delta Time = " + deltaTime);
 			}
-            lastTime = currentTime;
-			System.out.println("Gyroscope x: " + theta_x + " y: " + theta_y + " z: " + theta_z + " degrees");
+                        lastTime = currentTime;
+			long  timeSinceLastDisplay = currentTime - lastDisplay;
+			//System.out.println("timeSinceLastDisplay = " + timeSinceLastDisplay);
+			if(currentTime - lastDisplay > displayTime) {
+			   System.out.println("Gyroscope x: " + theta_x + " y: " + theta_y + " z: " + theta_z + " degrees");
+			   lastDisplay = currentTime;
+			}
 
+			//System.out.println("currentTime: " + currentTime);
+			//System.out.println("lastDisplay: " + lastDisplay);
 			Thread.sleep(100);
 		}
 

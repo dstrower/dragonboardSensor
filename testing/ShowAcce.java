@@ -26,18 +26,21 @@ import java.util.AbstractList;
 
 import upm_lsm6ds3h.*;
 
-public class LSM6DS3H_Example
+public class ShowAcce
 {
     public static void main(String[] args) throws InterruptedException
     {
 // ! [Interesting]
 
         // Instantiate a LSM6DS3H instance using default i2c bus and address
-        LSM6DS3H sensor = new LSM6DS3H(0);
+        LSM6DS3H sensor = new LSM6DS3H();
 
         // For SPI, bus 0, you would pass -1 as the address, and a
         // valid pin for CS:
         // LSM6DS3H(0, -1, 10);
+        float theta_x = 0;
+        float theta_y = 0;
+        float theta_z = 0;
 
         while (true)
             {
@@ -52,26 +55,7 @@ public class LSM6DS3H_Example
                                    + " z: " + data.get(2)
                                    + " g");
 
-                data = sensor.getGyroscope();
-
-                System.out.println("Gyroscope x: " + data.get(0)
-                                   + " y: " + data.get(1)
-                                   + " z: " + data.get(2)
-                                   + " dps");
-
-                //
-		System.out.println("Compensation Temperature: "
-                                   
-				   + sensor.getTemperature()
-                                   
-				   + " C / "
-                                   
-				   + sensor.getTemperature(true)
-                                   
-				   + " F");
-
-                System.out.println();
-                Thread.sleep(2000);
+                Thread.sleep(100);
             }
 
 // ! [Interesting]

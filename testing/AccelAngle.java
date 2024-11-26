@@ -25,15 +25,16 @@
 import java.util.AbstractList;
 
 import upm_lsm6ds3h.*;
+import java.lang.Math.*;
 
-public class LSM6DS3H_Example
+public class AccelAngle
 {
     public static void main(String[] args) throws InterruptedException
     {
 // ! [Interesting]
 
         // Instantiate a LSM6DS3H instance using default i2c bus and address
-        LSM6DS3H sensor = new LSM6DS3H(0);
+        LSM6DS3H sensor = new LSM6DS3H();
 
         // For SPI, bus 0, you would pass -1 as the address, and a
         // valid pin for CS:
@@ -45,35 +46,31 @@ public class LSM6DS3H_Example
                 sensor.update();
 
                 floatVector data = sensor.getAccelerometer();
+		float acc_x =  data.get(0);
+		float acc_y =  data.get(1);
+		float acc_z =  data.get(2);
+		acc_x = normalizeAngle(acc_x);
+		acc_y = normalizeAngle(acc_y);
+		acc_z = normalizeAngle(acc_z);
+                double theta_x = Math.asin(acc_x);
+                double theta_y = Math.asin(acc_y);
+                double theta_z = Math.asin(acc_z);
+		theta_x = Math.toDegrees(theta_x);
+		theta_y = Math.toDegrees(theta_y);
+		theta_z = Math.toDegrees(theta_z);
 
                 //
-		System.out.println("Accelerometer x: " + data.get(0)
-                                   + " y: " + data.get(1)
-                                   + " z: " + data.get(2)
-                                   + " g");
+		System.out.println("Angles: " + theta_x +", " + theta_y + ", " + theta_z);
 
-                data = sensor.getGyroscope();
-
-                System.out.println("Gyroscope x: " + data.get(0)
-                                   + " y: " + data.get(1)
-                                   + " z: " + data.get(2)
-                                   + " dps");
-
-                //
-		System.out.println("Compensation Temperature: "
-                                   
-				   + sensor.getTemperature()
-                                   
-				   + " C / "
-                                   
-				   + sensor.getTemperature(true)
-                                   
-				   + " F");
-
-                System.out.println();
-                Thread.sleep(2000);
+                Thread.sleep(100);
             }
 
 // ! [Interesting]
+    }
+
+    private static float normalizeAngle(float theta) { 
+	    theta = Math.max(-1,theta);
+	    theta = Math.min(1,theta);
+	    return theta;
     }
 }
