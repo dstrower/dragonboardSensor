@@ -1,7 +1,7 @@
 import serial
 import time
 
-ser = serial.Serial('/dev/ttyACM0', 9600)  # Replace with your Arduino's port 
+ser = serial.Serial('/dev/tty96B0', 9600)  # Replace with your Arduino's port 
 
 def set_servo_angle(angle):
     ser.write(str(angle).encode() + b'\n')
