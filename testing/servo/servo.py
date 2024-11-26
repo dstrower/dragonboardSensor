@@ -1,9 +1,9 @@
-import RPi.GPIO as GPIO
+import serial
 import time
 
-# Set GPIO numbering mode
-GPIO.setmode(GPIO.BCM)
+ser = serial.Serial('/dev/ttyACM0', 9600)  # Replace with your Arduino's port 
 
+<<<<<<< HEAD
 # Set the GPIO pin connected to the servo
 servo_pin = 4
 
@@ -25,18 +25,16 @@ def set_angle(angle):
     time.sleep(1)
     GPIO.output(servo_pin, False)
     pwm.ChangeDutyCycle(0)
+=======
+def set_servo_angle(angle):
+    ser.write(str(angle).encode() + b'\n')
+>>>>>>> 456d41238d24492e1253de00a53ecee54d797867
 
 try:
     while True:
-        # Set the servo to 90 degrees
-        set_angle(90)
-        time.sleep(1)
-
-        # Set the servo to 0 degrees
-        set_angle(0)
-        time.sleep(1)
+        angle = int(input("Enter servo angle (0-180): "))
+        set_servo_angle(angle)
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
-    # Clean up the GPIO pins on exit
-    pwm.stop()
-    GPIO.cleanup()
+    ser.close()
