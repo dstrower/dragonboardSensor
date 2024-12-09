@@ -42,7 +42,7 @@
 sudo apt-get install libmraa-java
 ```
   
- 10. Add java based upm package
+ 10. Add java based upm  package
  
  ```
 sudo apt-get install libupm-java
