@@ -1,2 +1,3 @@
 *.class
 testing/servo/build-uno/*
+testing/ipaddress/aws.txt

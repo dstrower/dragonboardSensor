@@ -19,13 +19,19 @@ public class ServoTest {
         try {
             OutputStream outputStream = comPort.getOutputStream();
             while(true) {
-                String number = scanner.nextLine();
+		System.out.println("Enter angle for servo 1 (quit to quit)");
+                String number = scanner.nextLine().trim();
                 if("quit".equals(number)) {
                   break; 
                 }
-                outputStream.write(number.getBytes());
+		System.out.println("Enter angle for servo 2");
+                String number2 = scanner.nextLine().trim();
+		String message = number + "| " + number2;
+		System.out.println("Sending message: "+message);
+                outputStream.write(message.getBytes());
                 outputStream.write(System.getProperty("line.separator").getBytes());
                 outputStream.flush();
+
            }
         } catch (Exception e) {
             e.printStackTrace();
