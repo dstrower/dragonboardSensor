@@ -1,4 +1,8 @@
 package server;
+
+
+
+
 // A Java program for a Server
 import java.net.*;
 import java.io.*;
@@ -75,7 +79,6 @@ public class Server {
   }
 
   private void createFile(String shutdownFile) {
-	  System.out.println("shutdown file = " + shutdownFile);
      File shutDown = new File(shutdownFile);
     try {
       shutDown.createNewFile();
