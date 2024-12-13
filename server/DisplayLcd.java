@@ -23,9 +23,9 @@ package server;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class DisplayIpLcd implements DisplayIp {
+public class DisplayIpLcd implements Display {
     
-    public void displayIp(String ip) {
+    public void displayMessage(String ip) {
 
         upm_jhd1313m1.Jhd1313m1 lcd = new upm_jhd1313m1.Jhd1313m1(0);
 

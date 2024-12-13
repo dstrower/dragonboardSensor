@@ -7,21 +7,20 @@ import java.io.FileReader;
 
 public class StartServer {
 
-  private void runApp() {
-    Properties properties = getProperties();
-    String ipAddressFile = properties.getProperty("ipaddressFile");
-    String displayIpClass =  properties.getProperty("displayIpClass");
-    String ipAddress = getIpaddress(ipAddressFile);
-    System.out.println("ipaddres is: "+ ipAddress);
-    displayIp(displayIpClass,ipAddress);
-    Server server = new Server(5000,properties);
-  }
+  private  Properties properties;
+  private Display display;
 
-  private void displayIp(String displayIpClass,String ip) {
+  private void runApp() {
     try {
-      Object displayer = Class.forName(displayIpClass).newInstance();
-      DisplayIp displayIP = (DisplayIp) displayer;
-      displayIP.displayIp(ip);
+      properties = getProperties();
+      String ipAddressFile = getProperties().getProperty("ipaddressFile");
+      String displayClass = getProperties().getProperty("displayIpClass");
+      String ipAddress = getIpaddress(ipAddressFile);
+      System.out.println("ipaddres is: " + ipAddress);
+      Object displayer = Class.forName(displayClass).newInstance();
+      display = (Display) displayer;
+      displayMessage(ipAddress);
+      Server server = new Server(5000, this);
     } catch (InstantiationException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
@@ -29,6 +28,10 @@ public class StartServer {
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void displayMessage(String message) {
+      display.displayMessage(message);
   }
 
   private String getIpaddress(String ipAddressFile) {
@@ -55,7 +58,7 @@ public class StartServer {
      return ipAddress;
   }
 
-  private Properties getProperties() {
+  public Properties getProperties() {
     Properties prop = new Properties();
     try {
       prop.load(Server.class.getClassLoader().getResourceAsStream("dragon.properties"));

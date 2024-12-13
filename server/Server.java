@@ -18,10 +18,11 @@ public class Server {
   private static final String STOP_SERVER = "stopServer";
 
   // constructor with port
-  public Server(int port,Properties properties)
+  public Server(int port,StartServer parent)
 
   {
      boolean loopInProcess = true;
+     Properties properties = parent.getProperties();
      String shutdownFile = properties.getProperty("shutdownFile");
       // starts server and waits for a connection
     try {
@@ -54,6 +55,7 @@ public class Server {
             if (OVER.equals(line)) {
               break;
             } else if (SHUTDOWN.equals(line)) {
+              parent.displayMessage("Shutting down");
               createFile(shutdownFile);
               loopInProcess = false;
               break;
