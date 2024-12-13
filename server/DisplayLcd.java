@@ -23,7 +23,7 @@ package server;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class DisplayIpLcd implements Display {
+public class DisplayLcd implements Display {
     
     public void displayMessage(String ip) {
 
