@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class StopServerListener implements ActionListener {
+
   ClientPanel parent;
+
   public StopServerListener(ClientPanel cp) {
-     this.parent = cp;
+    this.parent = cp;
   }
 
   @Override
@@ -21,8 +23,9 @@ public class StopServerListener implements ActionListener {
           socket.getOutputStream());
       out.writeUTF("stopServer");
     } catch (IOException i) {
-    System.out.println(i);
-    return;
-  }
+      System.out.println(i);
+      return;
+    }
+    parent.disconnectionMade();
   }
 }

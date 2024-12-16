@@ -27,6 +27,7 @@ public class ConnectListener implements ActionListener {
     try {
       parent.makeConnection(ipAddress, 5000);
       System.out.println("Connected");
+
       parent.connectionMade();
     } catch (UnknownHostException u) {
       System.out.println(u);

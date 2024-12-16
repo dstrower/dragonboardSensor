@@ -7,7 +7,7 @@ public class ClientFrame extends JFrame {
   public ClientFrame() {
     setTitle("DragonBoard 410c");
     setSize(440,80);
-    ClientPanel panel = new ClientPanel();
+    ClientPanel panel = new ClientPanel(this);
     add(panel);
     pack();
   }

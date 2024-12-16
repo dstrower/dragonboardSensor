@@ -12,10 +12,13 @@ public class Server {
   //initialize socket and input stream
   private Socket          socket   = null;
   private ServerSocket    server   = null;
+  private DataOutputStream out = null;
   private DataInputStream in       =  null;
   private static final String OVER = "Over";
   private static final String SHUTDOWN = "shutdown";
   private static final String STOP_SERVER = "stopServer";
+  private static final String BUZZER = "buzzer";
+  private static final String SERVO = "servo";
 
   // constructor with port
   public Server(int port,StartServer parent)
@@ -43,7 +46,8 @@ public class Server {
         // takes input from the client socket
         in = new DataInputStream(
             new BufferedInputStream(socket.getInputStream()));
-
+        out = new DataOutputStream(
+            socket.getOutputStream());
         //String line = in.readUTF();
 
         // reads message from client until "Over" is sent
@@ -54,14 +58,20 @@ public class Server {
 
             if (OVER.equals(line)) {
               break;
-            } else if (SHUTDOWN.equals(line)) {
+            } else if(BUZZER.equals(line))  {
+              out.writeUTF("Hitting buzzer");
+            }
+            else if (SHUTDOWN.equals(line)) {
               parent.displayMessage("Shutting down");
               createFile(shutdownFile);
               loopInProcess = false;
               break;
             } else if(STOP_SERVER.equals(line)) {
+              parent.displayMessage("Server stopped.");
               loopInProcess = false;
               break;
+            } else if(line != null && line.contains(SERVO)) {
+               parent.displayMessage("Moving servos");
             }
           } catch (IOException i) {
             System.out.println(i);

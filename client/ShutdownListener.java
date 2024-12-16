@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ShutdownListener implements ActionListener {
+
   ClientPanel parent;
+
   public ShutdownListener(ClientPanel cp) {
-     this.parent = cp;
+    this.parent = cp;
   }
 
   @Override
@@ -21,8 +23,9 @@ public class ShutdownListener implements ActionListener {
           socket.getOutputStream());
       out.writeUTF("shutdown");
     } catch (IOException i) {
-    System.out.println(i);
-    return;
-  }
+      System.out.println(i);
+      return;
+    }
+    parent.disconnectionMade();
   }
 }
