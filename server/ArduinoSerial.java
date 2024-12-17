@@ -2,11 +2,17 @@ package server;
 
 import com.fazecast.jSerialComm.*;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Scanner;
 
-public class ArduinoSerial implements Arduino {
+public class ArduinoSerial implements Arduino, Runnable {
   SerialPort comPort = SerialPort.getCommPort("/dev/tty96B0"); // Replace with your port name
+
+  private DataInputStream in = null;
+  private volatile boolean running = true;
   public ArduinoSerial() {
     comPort.openPort();
 
@@ -33,6 +39,22 @@ public class ArduinoSerial implements Arduino {
     }
     // Close the serial port
 
+  }
+
+  @Override
+  public void run() {
+    System.out.println("Starting Arduino reader");
+    in = new DataInputStream(
+        new BufferedInputStream(comPort.getInputStream()));
+    while (running) {
+      try {
+        String line = in.readUTF();
+        System.out.println("From Arduino: " + line);
+
+      } catch (IOException e) {
+        running = false;
+      }
+    }
   }
 }
 

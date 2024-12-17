@@ -12,13 +12,7 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    String content = Serial.readStringUntil('\n');
-    
-          digitalWrite(buzzer,HIGH);
-      
-       
-     
-    
+    digitalWrite(buzzer,HIGH);
   }
 		
 

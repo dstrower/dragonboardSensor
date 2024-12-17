@@ -24,6 +24,10 @@ public class StartServer {
       display = (Display) displayer;
       Object ard = Class.forName(arduinoClass).newInstance();
       arduino  = (Arduino) ard;
+      if(ard instanceof Runnable) {
+        Thread thread = new Thread((Runnable) ard);
+        thread.start();
+      }
       displayMessage(ipAddress);
       Server server = new Server(5000, this);
     } catch (InstantiationException e) {
