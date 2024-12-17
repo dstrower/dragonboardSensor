@@ -6,11 +6,8 @@ import java.io.OutputStream;
 import java.util.Scanner;
 
 public class ArduinoSerial implements Arduino {
-
-  public void sendMessage(String message) {
-	  System.out.println("Sending " + message + " to Arduino");
-    // Open the serial port
-    SerialPort comPort = SerialPort.getCommPort("/dev/tty96B0"); // Replace with your port name
+  SerialPort comPort = SerialPort.getCommPort("/dev/tty96B0"); // Replace with your port name
+  public ArduinoSerial() {
     comPort.openPort();
 
     // Set up the port parameters
@@ -18,6 +15,13 @@ public class ArduinoSerial implements Arduino {
     comPort.setNumDataBits(8);
     comPort.setNumStopBits(SerialPort.ONE_STOP_BIT);
     comPort.setParity(SerialPort.NO_PARITY);
+  }
+
+  public void sendMessage(String message) {
+	  System.out.println("Sending " + message + " to Arduino");
+    // Open the serial port
+
+
     // Write to the serial port
     try {
       OutputStream outputStream = comPort.getOutputStream();
@@ -28,7 +32,7 @@ public class ArduinoSerial implements Arduino {
       e.printStackTrace();
     }
     // Close the serial port
-    comPort.closePort();
+
   }
 }
 
