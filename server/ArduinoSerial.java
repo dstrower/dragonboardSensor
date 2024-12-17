@@ -48,8 +48,14 @@ public class ArduinoSerial implements Arduino, Runnable {
         new BufferedInputStream(comPort.getInputStream()));
     while (running) {
       try {
-        String line = in.readUTF();
-        System.out.println("From Arduino: " + line);
+        int size = in.available();
+        if(size > 0) {
+          System.out.println("Message heard");
+          byte[] b = new byte[100];
+          in.read(b,0,size);
+          String line = new String(b);
+          System.out.println("From Arduino: " + line);
+        }
 
       } catch (IOException e) {
         running = false;
