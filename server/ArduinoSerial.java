@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class ArduinoSerial implements Arduino {
 
   public void sendMessage(String message) {
+	  System.out.println("Sending " + message + " to Arduino");
     // Open the serial port
     SerialPort comPort = SerialPort.getCommPort("/dev/tty96B0"); // Replace with your port name
     comPort.openPort();

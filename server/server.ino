@@ -12,16 +12,11 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-	String content = Serial.readStringUntil('\n');
-	if(content.indexOf("buzzer") > 0) {
-		String action = content.substring(content.indexOf("|")+1,content.length());
-		if(action.equals("ON")) {
-			digitalWrite(buzzer,HIGH);
-		} else {
-			digitalWrite(buzzer,LOW);
-		}
-	}    
+    digitalWrite(buzzer,HIGH);
   }
+		
+
+  
   delay(500);
 }
 

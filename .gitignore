@@ -2,3 +2,4 @@
 testing/servo/build-uno/*
 testing/ipaddress/aws.txt
 *.properties
+server/build-uno/*
