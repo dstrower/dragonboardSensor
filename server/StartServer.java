@@ -10,15 +10,20 @@ public class StartServer {
   private  Properties properties;
   private Display display;
 
+  private Arduino arduino;
+
   private void runApp() {
     try {
       properties = getProperties();
       String ipAddressFile = getProperties().getProperty("ipaddressFile");
       String displayClass = getProperties().getProperty("displayIpClass");
+      String arduinoClass = getProperties().getProperty("arduinoClass");
       String ipAddress = getIpaddress(ipAddressFile);
       System.out.println("ipaddres is: " + ipAddress);
       Object displayer = Class.forName(displayClass).newInstance();
       display = (Display) displayer;
+      Object ard = Class.forName(arduinoClass).newInstance();
+      arduino  = (Arduino) ard;
       displayMessage(ipAddress);
       Server server = new Server(5000, this);
     } catch (InstantiationException e) {
@@ -31,7 +36,11 @@ public class StartServer {
   }
 
   public void displayMessage(String message) {
-      display.displayMessage(message);
+    display.displayMessage(message);
+  }
+
+  public void sendToArduino(String message) {
+    arduino.sendMessage(message);
   }
 
   private String getIpaddress(String ipAddressFile) {

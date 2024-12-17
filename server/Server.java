@@ -7,6 +7,7 @@ package server;
 import java.net.*;
 import java.io.*;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
   //initialize socket and input stream
@@ -60,6 +61,9 @@ public class Server {
               break;
             } else if(BUZZER.equals(line))  {
               out.writeUTF("Hitting buzzer");
+              parent.sendToArduino("buzzer|ON");
+              TimeUnit.SECONDS.sleep(1);
+              parent.sendToArduino("buzzer|OFF");
             }
             else if (SHUTDOWN.equals(line)) {
               parent.displayMessage("Shutting down");
@@ -72,10 +76,13 @@ public class Server {
               break;
             } else if(line != null && line.contains(SERVO)) {
                parent.displayMessage("Moving servos");
+              parent.sendToArduino(line);
             }
           } catch (IOException i) {
             System.out.println(i);
             break;
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
           }
         }
         System.out.println("Closing connection");
