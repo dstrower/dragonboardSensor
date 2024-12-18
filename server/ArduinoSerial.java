@@ -1,7 +1,7 @@
 package server;
 
 import com.fazecast.jSerialComm.*;
-
+import java.nio.charset.StandardCharsets;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -51,9 +51,9 @@ public class ArduinoSerial implements Arduino, Runnable {
         int size = in.available();
         if(size > 0) {
           System.out.println("Message heard");
-          byte[] b = new byte[100];
+          byte[] b = new byte[size];
           in.read(b,0,size);
-          String line = new String(b);
+          String line = new String(b,StandardCharsets.UTF_8);
           System.out.println("From Arduino: " + line);
         }
 

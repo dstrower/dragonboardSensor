@@ -11,8 +11,25 @@ void setup() {
 }
 
 void loop() {
+  //Serial.write("Hello");
   if (Serial.available() > 0) {
-    digitalWrite(buzzer,HIGH);
+    Serial.println("Have input");
+    String content = Serial.readStringUntil('\n');
+    Serial.print(content+'\n');
+    if(content.indexOf("buzzer") > -1) {
+        Serial.println("Verb is buzzer");
+        String action = content.substring(content.indexOf("|")+1,content.length());
+        Serial.println(action);
+        if(action.equals("ON")) {
+          digitalWrite(buzzer,HIGH);
+        } else {
+            digitalWrite(buzzer,LOW);
+        }
+    } else {
+       
+    }
+      
+    
   }
 		
 
