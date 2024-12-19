@@ -11,6 +11,8 @@ import java.util.Scanner;
 public class ArduinoSerial implements Arduino, Runnable {
   SerialPort comPort = SerialPort.getCommPort("/dev/tty96B0"); // Replace with your port name
 
+  ArduinoButtonListener arduinoButtonListener = null;
+
   private DataInputStream in = null;
   private volatile boolean running = true;
   public ArduinoSerial() {
@@ -42,6 +44,11 @@ public class ArduinoSerial implements Arduino, Runnable {
   }
 
   @Override
+  public void setArduinoButtonListener(ArduinoButtonListener ab) {
+    this.arduinoButtonListener = ab;
+  }
+
+  @Override
   public void run() {
     System.out.println("Starting Arduino reader");
     in = new DataInputStream(
@@ -55,6 +62,7 @@ public class ArduinoSerial implements Arduino, Runnable {
           in.read(b,0,size);
           String line = new String(b,StandardCharsets.UTF_8);
           System.out.println("From Arduino: " + line);
+          arduinoButtonListener.sendMessageToClient(line);
         }
 
       } catch (IOException e) {

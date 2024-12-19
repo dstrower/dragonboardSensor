@@ -9,6 +9,11 @@ public class ArduinoSimple implements Arduino, Runnable {
   }
 
   @Override
+  public void setArduinoButtonListener(ArduinoButtonListener arduinoButtonListener) {
+
+  }
+
+  @Override
   public void run() {
      System.out.println("Arduino listener starting");
   }

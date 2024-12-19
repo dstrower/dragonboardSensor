@@ -21,6 +21,14 @@ public class Server {
   private static final String BUZZER = "buzzer";
   private static final String SERVO = "servo";
 
+  public void sendMessageToClient(String message) {
+    try {
+      out.writeUTF(message);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   // constructor with port
   public Server(int port,StartServer parent)
 
