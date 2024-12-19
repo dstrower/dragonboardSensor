@@ -28,9 +28,11 @@ public class Server {
       throw new RuntimeException(e);
     }
   }
+  public Server(int port,StartServer parent) {
 
+  }
   // constructor with port
-  public Server(int port,StartServer parent)
+  public void start(int port,StartServer parent)
 
   {
      boolean loopInProcess = true;
