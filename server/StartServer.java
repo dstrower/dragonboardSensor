@@ -12,6 +12,9 @@ public class StartServer {
 
   private Arduino arduino;
 
+  Server server;
+
+
   private void runApp() {
     try {
       properties = getProperties();
@@ -24,12 +27,15 @@ public class StartServer {
       display = (Display) displayer;
       Object ard = Class.forName(arduinoClass).newInstance();
       arduino  = (Arduino) ard;
+      ArduinoButtonListener arduinoButtonListener = new ArduinoButtonListener(server);
+      arduino.setArduinoButtonListener(arduinoButtonListener);
       if(ard instanceof Runnable) {
         Thread thread = new Thread((Runnable) ard);
         thread.start();
       }
       displayMessage(ipAddress);
-      Server server = new Server(5000, this);
+
+      server = new Server(5000, this);
     } catch (InstantiationException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
