@@ -20,6 +20,8 @@ public class Server {
   private static final String STOP_SERVER = "stopServer";
   private static final String BUZZER = "buzzer";
   private static final String SERVO = "servo";
+  private static final String UPLOAD = "upload";
+  private FileUploader fileUploader = new FileUploader();
 
   public void sendMessageToClient(String message) {
     try {
@@ -87,7 +89,11 @@ public class Server {
             } else if(line != null && line.contains(SERVO)) {
                parent.displayMessage("Moving servos");
               parent.sendToArduino(line);
+            } else if(UPLOAD.equals(line)) {
+               Thread thread = new Thread(fileUploader);
+               thread.start();
             }
+
           } catch (IOException i) {
             System.out.println(i);
             break;

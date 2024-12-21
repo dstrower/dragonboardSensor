@@ -18,9 +18,11 @@ public class ClientPanel extends JPanel {
   private String ipAddress = "192.10.0.1";
   private IPAddressListener ipAddressListener;
   private JButton connectButton;
+  private JButton downloadButton;
   private JButton disconnectButton;
   private JButton testBuzzerButton;
   private JButton testServosButton;
+  private JButton uploadButton;
   private JButton turnOffDragonBoard;
   private JButton stopDragonBoardServer;
   private Socket socket = null;
@@ -46,12 +48,16 @@ public class ClientPanel extends JPanel {
     panel.setLayout(new GridLayout(3, 1));
     panel.add(ipAddressPanel, BorderLayout.NORTH);
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(6, 1));
+    buttonPanel.setLayout(new GridLayout(8,1));
     ConnectListener connectListener = new ConnectListener(this);
     DisconnectListener disconnectListener = new DisconnectListener(this);
     ShutdownListener shutdownListener = new ShutdownListener(this);
+    DownloadListener downloadListener = new DownloadListener(this);
+    UploadListener uploadListener = new UploadListener(this);
+    downloadButton = addButton("Download Files", downloadListener, buttonPanel, true);
     connectButton = addButton("Connect To DragonBoard", connectListener, buttonPanel, true);
     disconnectButton = addButton("Disconnect From DragonBoard", disconnectListener, buttonPanel, false);
+    uploadButton = addButton("Upload Files", uploadListener, buttonPanel, false);
     TestBuzzerListener testBuzzerListener = new TestBuzzerListener(this);
     testBuzzerButton = addButton("Test Buzzer", testBuzzerListener, buttonPanel, false);
     ServoListener servoListener = new ServoListener(this);
@@ -76,6 +82,7 @@ public class ClientPanel extends JPanel {
 
   public void connectionMade() {
     connectButton.setEnabled(false);
+    uploadButton.setEnabled(true);
     disconnectButton.setEnabled(true);
     testBuzzerButton.setEnabled(true);
     testServosButton.setEnabled(true);
@@ -89,6 +96,7 @@ public class ClientPanel extends JPanel {
   public void disconnectionMade() {
     socketListener.stopThread();
     connectButton.setEnabled(true);
+    uploadButton.setEnabled(false);
     disconnectButton.setEnabled(false);
     testBuzzerButton.setEnabled(false);
     testServosButton.setEnabled(false);
