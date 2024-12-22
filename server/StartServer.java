@@ -11,6 +11,7 @@ public class StartServer {
   private Display display;
 
   private Arduino arduino;
+  private Accelerometer accelerometer;
 
 
 
@@ -21,14 +22,15 @@ public class StartServer {
       String ipAddressFile = getProperties().getProperty("ipaddressFile");
       String displayClass = getProperties().getProperty("displayIpClass");
       String arduinoClass = getProperties().getProperty("arduinoClass");
+      String accelerometerClass = getProperties().getProperty("accelerometerClass");
       String ipAddress = getIpaddress(ipAddressFile);
       System.out.println("ipaddres is: " + ipAddress);
       Object displayer = Class.forName(displayClass).newInstance();
       display = (Display) displayer;
       Object ard = Class.forName(arduinoClass).newInstance();
       arduino  = (Arduino) ard;
-
-
+      Object accelerator = Class.forName(accelerometerClass).newInstance();
+      accelerometer = (Accelerometer)  accelerator;
       Server server = new Server(5000, this);
       ArduinoButtonListener arduinoButtonListener = new ArduinoButtonListener(server);
       arduino.setArduinoButtonListener(arduinoButtonListener);
@@ -95,4 +97,7 @@ public class StartServer {
     myApp.runApp();
   }
 
+  public Accelerometer getAccelerometer() {
+    return accelerometer;
+  }
 }

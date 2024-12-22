@@ -21,7 +21,9 @@ public class Server {
   private static final String BUZZER = "buzzer";
   private static final String SERVO = "servo";
   private static final String UPLOAD = "upload";
+  private static final String RECORDER_TEST = "recorder_test";
   private FileUploader fileUploader = new FileUploader();
+  private Recorder recorder = null;
 
   public void sendMessageToClient(String message) {
     try {
@@ -37,6 +39,8 @@ public class Server {
   public void start(int port,StartServer parent)
 
   {
+    Accelerometer accelerometer = parent.getAccelerometer();
+     recorder = new Recorder(accelerometer,this);
      boolean loopInProcess = true;
      Properties properties = parent.getProperties();
      String shutdownFile = properties.getProperty("shutdownFile");
@@ -92,6 +96,9 @@ public class Server {
             } else if(UPLOAD.equals(line)) {
                Thread thread = new Thread(fileUploader);
                thread.start();
+            } else if(RECORDER_TEST.equals(line)) {
+              Thread thread = new Thread(recorder);
+              thread.start();
             }
 
           } catch (IOException i) {

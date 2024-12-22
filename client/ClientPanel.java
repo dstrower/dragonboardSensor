@@ -22,6 +22,7 @@ public class ClientPanel extends JPanel {
   private JButton disconnectButton;
   private JButton testBuzzerButton;
   private JButton testServosButton;
+  private JButton testAccelButton;
   private JButton uploadButton;
   private JButton turnOffDragonBoard;
   private JButton stopDragonBoardServer;
@@ -48,7 +49,7 @@ public class ClientPanel extends JPanel {
     panel.setLayout(new GridLayout(3, 1));
     panel.add(ipAddressPanel, BorderLayout.NORTH);
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(8,1));
+    buttonPanel.setLayout(new GridLayout(9,1));
     ConnectListener connectListener = new ConnectListener(this);
     DisconnectListener disconnectListener = new DisconnectListener(this);
     ShutdownListener shutdownListener = new ShutdownListener(this);
@@ -62,6 +63,8 @@ public class ClientPanel extends JPanel {
     testBuzzerButton = addButton("Test Buzzer", testBuzzerListener, buttonPanel, false);
     ServoListener servoListener = new ServoListener(this);
     testServosButton = addButton("Test Servos",servoListener,buttonPanel,false);
+    TestAccelListener testAccelListener = new TestAccelListener(this);
+    testAccelButton = addButton("Test Accelerometer", testAccelListener, buttonPanel, false);
     turnOffDragonBoard = addButton("Turn off DragonBoard", shutdownListener, buttonPanel, false);
     StopServerListener stopServerListener = new StopServerListener(this);
     stopDragonBoardServer = addButton("Stop DragonBoard Server", stopServerListener, buttonPanel, false);
@@ -86,6 +89,7 @@ public class ClientPanel extends JPanel {
     disconnectButton.setEnabled(true);
     testBuzzerButton.setEnabled(true);
     testServosButton.setEnabled(true);
+    testAccelButton.setEnabled(true);
     turnOffDragonBoard.setEnabled(true);
     stopDragonBoardServer.setEnabled(true);
     socketListener = new SocketListener(this);
@@ -100,6 +104,7 @@ public class ClientPanel extends JPanel {
     disconnectButton.setEnabled(false);
     testBuzzerButton.setEnabled(false);
     testServosButton.setEnabled(false);
+    testAccelButton.setEnabled(false);
     turnOffDragonBoard.setEnabled(false);
     stopDragonBoardServer.setEnabled(false);
   }
