@@ -6,13 +6,13 @@ import java.util.AbstractList;
 import upm_lsm6ds3h.*;
 public class Recorder implements Runnable{
 
-  private Accelerometer sensor;
+  private LSM6DS3H sensor;
   private Server server;
   private boolean record = true;
   private int sleepTime = 1000;
 
   private long sessionLength = 10;
-  public Recorder(Accelerometer a,Server s) {
+  public Recorder(LSM6DS3H a,Server s) {
     this.sensor = a;
     this.server = s;
   }
@@ -32,8 +32,8 @@ public class Recorder implements Runnable{
        sensor.update();
        floatVector accelData = sensor.getAccelerometer();
        floatVector gyroData = sensor.getGyroscope();
-       String tempC = sensor.getTemperature();
-       String tempF = sensor.getTemperature(true);
+       String tempC = "0";
+       String tempF = "32";
        sendDatatoClient(timeElapse,accelData,gyroData,tempC,tempF);
        count++;
        try {
@@ -52,8 +52,8 @@ public class Recorder implements Runnable{
     line = line + "," + "gyroX=" + gyroData.get(0);
     line = line + "," + "gyroY=" + gyroData.get(1);
     line = line + "," + "gyroZ=" + gyroData.get(2);
-    line = line + "," + "tempC=" + tempC;
-    line = line + "," + "tempF=" + tempF;
+    line = line + "," + "tempC=" + tempC.toString();
+    line = line + "," + "tempF=" + tempF.toString();
     System.out.println(line);
   }
 

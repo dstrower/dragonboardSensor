@@ -8,6 +8,8 @@ import java.net.*;
 import java.io.*;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import upm_lsm6ds3h.*;
+
 
 public class Server {
   //initialize socket and input stream
@@ -39,7 +41,7 @@ public class Server {
   public void start(int port,StartServer parent)
 
   {
-    Accelerometer accelerometer = parent.getAccelerometer();
+     LSM6DS3H accelerometer = parent.getAccelerometer();
      recorder = new Recorder(accelerometer,this);
      boolean loopInProcess = true;
      Properties properties = parent.getProperties();
