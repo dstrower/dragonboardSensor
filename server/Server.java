@@ -5,6 +5,7 @@ package server;
 
 // A Java program for a Server
 import java.net.*;
+import java.io.File;
 import java.io.*;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -104,8 +105,12 @@ public class Server {
 			  recorder.setRecord(false);
               Thread thread = new Thread(recorder);
               thread.start();
-			} else if(RECORD.equals(line)) {
-			  recorder.setRecord(true);
+	   } else if(RECORD.equals(line)) {
+	      String uploadDirectory = parent.getUploadDirectory();
+	      System.out.println("uploadDirectory = " + uploadDirectory);
+	      File myFile = new File(uploadDirectory + "accel.cvs");
+	      myFile.createNewFile();
+	      recorder.setRecord(true);
               Thread thread = new Thread(recorder);
               thread.start();
             } else if(ZERO.equals(line)) {

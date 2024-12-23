@@ -77,7 +77,7 @@ public class Recorder implements Runnable{
        float tempC = sensor.getTemperature();
        float tempF = sensor.getTemperature(true);
 	   if(record) {
-         dataHolder.addDataPoint(timeElapse,accelData,gyroData,tempC,tempF);
+         dataHolder.addPoint(timeElapse,accelData,gyroData,tempC,tempF);
 	   } else {
 		    sendDatatoClient(timeElapse,accelData,gyroData,tempC,tempF);
 	   }
@@ -103,13 +103,11 @@ public class Recorder implements Runnable{
     line = line + "," + "gyroX=" + gyroData.get(0);
     line = line + "," + "gyroY=" + gyroData.get(1);
     line = line + "," + "gyroZ=" + gyroData.get(2);
-    line = line + "," + "tempC=" + tempC.toString();
-    line = line + "," + "tempF=" + tempF.toString();
+    line = line + "," + "tempC=" + Float.toString(tempC);
+    line = line + "," + "tempF=" + Float.toString(tempF);
     line = line + "," + "gyroX=" + gyroData.get(0);
     line = line + "," + "gyroY=" + gyroData.get(1);
     line = line + "," + "gyroZ=" + gyroData.get(2);
-    line = line + "," + "tempC=" + tempC.toString();
-    line = line + "," + "tempF=" + tempF.toString();
     //System.out.println(line);
     server.sendMessageToClient("accel|"+line);
   }

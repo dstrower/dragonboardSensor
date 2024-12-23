@@ -13,6 +13,7 @@ public class StartServer {
   private  Properties properties;
   private Display display;
 
+  private String uploadDirectory;
   private Arduino arduino;
   LSM6DS3H sensor = new LSM6DS3H(0);
 
@@ -25,6 +26,7 @@ public class StartServer {
       String ipAddressFile = getProperties().getProperty("ipaddressFile");
       String displayClass = getProperties().getProperty("displayIpClass");
       String arduinoClass = getProperties().getProperty("arduinoClass");
+      uploadDirectory = getProperties().getProperty("uploadDirectory");
       String ipAddress = getIpaddress(ipAddressFile);
       System.out.println("ipaddres is: " + ipAddress);
       Object displayer = Class.forName(displayClass).newInstance();
@@ -95,6 +97,10 @@ public class StartServer {
   public static void main(String[] args) {
     StartServer myApp = new StartServer();
     myApp.runApp();
+  }
+
+  public String getUploadDirectory() {
+	  return uploadDirectory;
   }
 
   public LSM6DS3H getAccelerometer() {
