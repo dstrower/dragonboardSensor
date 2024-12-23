@@ -123,7 +123,7 @@ public class DataHolder {
       if(line == null) {
          line = column;
       } else {
-         line = line + "," + line;
+         line = line + "," + column;
       }
     }
     dataList.add(line);
