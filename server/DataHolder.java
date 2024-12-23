@@ -51,7 +51,7 @@ public class DataHolder {
   private float xPosition = 0.0F;
   private float yPosition = 0.0F;
   private float zPosition = 0.0F;
-
+  provate float deltaTime = 0.0F;
   private float xAngle = 0.0F;
   private float yAngle = 0.0F;
   private float zAngle = 0.0F;
@@ -76,15 +76,16 @@ public class DataHolder {
     zAccelerationList.add(zAcceleration);
     timeElapseList.add(timeElapse);
     if(timeElapse >0) {
+	  deltaTime = timeElapse.get(count) - timeElapse(count -1);
       xAccelerationAverage = (xAccelerationList.get(count) + xAccelerationList.get(count -1))/2.0F;
       yAccelerationAverage = (yAccelerationList.get(count) + yAccelerationList.get(count -1))/2.0F;
       zAccelerationAverage = (zAccelerationList.get(count) + zAccelerationList.get(count -1))/2.0F;
       xAngleVelocityAverage = (xAccelerationList.get(count) + xAccelerationList.get(count-1))/2.0F;
       yAngleVelocityAverage = (yAccelerationList.get(count) + yAccelerationList.get(count-1))/2.0F;
       zAngleVelocityAverage = (zAccelerationList.get(count) + zAccelerationList.get(count-1))/2.0F;
-      xVelocityCurrent = xVelocityCurrent + g*xAccelerationAverage*timeElapse;
-      yVelocityCurrent = yVelocityCurrent + g*yAccelerationAverage*timeElapse;
-      zVelocityCurrent = zVelocityCurrent + g*zAccelerationAverage*timeElapse;
+      xVelocityCurrent = xVelocityCurrent + g*xAccelerationAverage*deltaTime;
+      yVelocityCurrent = yVelocityCurrent + g*yAccelerationAverage*deltaTime;
+      zVelocityCurrent = zVelocityCurrent + g*zAccelerationAverage*deltaTime;
     }
     xVelocityList.add(xVelocityCurrent);
     yVelocityList.add(yVelocityCurrent);
@@ -94,15 +95,15 @@ public class DataHolder {
       yVelocityAverage = (yVelocityList.get(count) + yVelocityList.get(count-1))/2.0F;
       zVelocityAverage = (zVelocityList.get(count) + zVelocityList.get(count-1))/2.0F;
     }
-    xPosition = xPosition + xVelocityAverage*timeElapse;
-    yPosition = yPosition + yVelocityAverage*timeElapse;
-    zPosition = zPosition + zVelocityAverage*timeElapse;
+    xPosition = xPosition + xVelocityAverage*deltaTime;
+    yPosition = yPosition + yVelocityAverage*deltaTime;
+    zPosition = zPosition + zVelocityAverage*deltaTime;
     xPositionList.add(xPosition);
     yPositionList.add(yPosition);
     zPositionList.add(zPosition);
-    xAngle = xAngle + xAngleVelocityAverage*timeElapse;
-    yAngle = yAngle + yAngleVelocityAverage*timeElapse;
-    zAngle = zAngle + zAngleVelocityAverage*timeElapse;
+    xAngle = xAngle + xAngleVelocityAverage*deltaTime;
+    yAngle = yAngle + yAngleVelocityAverage*deltaTime;
+    zAngle = zAngle + zAngleVelocityAverage*deltaTime;
     count++;
   }
 
@@ -110,7 +111,7 @@ public class DataHolder {
     List<String> dataList = new ArrayList<>();
     List<String> headerList = new ArrayList<>();
     HashMap<String,List<Float>> valueMap = new HashMap<>();
-    addNext("Time Elapsed (seconds)",xAccelerationList,headerList,valueMap);
+    addNext("Time Elapsed (seconds)",timeElapse,headerList,valueMap);
     addNext("xAcceleration (g)",xAccelerationList,headerList,valueMap);
     addNext("yAcceleration (g)",yAccelerationList,headerList,valueMap);
     addNext("zAcceleration (g)",zAccelerationList,headerList,valueMap);
