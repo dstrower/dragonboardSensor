@@ -54,7 +54,8 @@ public class Recorder implements Runnable{
     line = line + "," + "gyroZ=" + gyroData.get(2);
     line = line + "," + "tempC=" + tempC.toString();
     line = line + "," + "tempF=" + tempF.toString();
-    System.out.println(line);
+    //System.out.println(line);
+    server.sendMessageToClient("accel|"+line);
   }
 
   public boolean isRecord() {
