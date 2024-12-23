@@ -44,7 +44,14 @@ public class Server {
   // constructor with port
   public void start(int port, StartServer parent) {
     LSM6DS3H accelerometer = parent.getAccelerometer();
-
+    String uploadDirectory = parent.getUploadDirectory();
+    System.out.println("uploadDirectory = " + uploadDirectory);
+    File myFile = new File(uploadDirectory + "accel.cvs");
+    try {
+    myFile.createNewFile();
+    } catch(Exception e) {
+    }
+    recorder = new Recorder(accelerometer, this, myFile);
     boolean loopInProcess = true;
     Properties properties = parent.getProperties();
     String shutdownFile = properties.getProperty("shutdownFile");
@@ -104,11 +111,6 @@ public class Server {
               Thread thread = new Thread(recorder);
               thread.start();
             } else if (RECORD.equals(line)) {
-              String uploadDirectory = parent.getUploadDirectory();
-              System.out.println("uploadDirectory = " + uploadDirectory);
-              File myFile = new File(uploadDirectory + "accel.cvs");
-              myFile.createNewFile();
-              recorder = new Recorder(accelerometer, this, myFile);
               recorder.setRecord(true);
               Thread thread = new Thread(recorder);
               thread.start();
