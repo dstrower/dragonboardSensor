@@ -75,10 +75,11 @@ public class Recorder implements Runnable {
     int count = 0;
     long timeElapse = 0;
     DataHolder dataHolder = new DataHolder(xOffset, yOffset, zOffset);
+    System.out.println("Starting recording session.");
     while (timeElapse < sessionLength) {
       if (count > 0) {
         LocalTime now = LocalTime.now();
-        timeElapse = ChronoUnit.SECONDS.between(startingTime, now);
+        timeElapse = ChronoUnit.MILLIS.between(startingTime, now);
       }
       // update our values from the sensor
       sensor.update();
@@ -98,7 +99,9 @@ public class Recorder implements Runnable {
         throw new RuntimeException(e);
       }
     }
+    System.out.println("Finished recording session.");
     List<String> recordList = dataHolder.createDataList();
+    System.out.println("The size of the dataList is: " + recordList.size());
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(recordFile))) {
       for(String line: recordList) {
         writer.write(line);
