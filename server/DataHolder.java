@@ -51,7 +51,7 @@ public class DataHolder {
   private float xPosition = 0.0F;
   private float yPosition = 0.0F;
   private float zPosition = 0.0F;
-  provate float deltaTime = 0.0F;
+  private float deltaTime = 0.0F;
   private float xAngle = 0.0F;
   private float yAngle = 0.0F;
   private float zAngle = 0.0F;
@@ -76,7 +76,7 @@ public class DataHolder {
     zAccelerationList.add(zAcceleration);
     timeElapseList.add(timeElapse);
     if(timeElapse >0) {
-	  deltaTime = timeElapse.get(count) - timeElapse(count -1);
+	  deltaTime = timeElapseList.get(count) - timeElapseList.get(count -1);
       xAccelerationAverage = (xAccelerationList.get(count) + xAccelerationList.get(count -1))/2.0F;
       yAccelerationAverage = (yAccelerationList.get(count) + yAccelerationList.get(count -1))/2.0F;
       zAccelerationAverage = (zAccelerationList.get(count) + zAccelerationList.get(count -1))/2.0F;
@@ -111,7 +111,7 @@ public class DataHolder {
     List<String> dataList = new ArrayList<>();
     List<String> headerList = new ArrayList<>();
     HashMap<String,List<Float>> valueMap = new HashMap<>();
-    addNext("Time Elapsed (seconds)",timeElapse,headerList,valueMap);
+    addNext("Time Elapsed (seconds)",timeElapseList,headerList,valueMap);
     addNext("xAcceleration (g)",xAccelerationList,headerList,valueMap);
     addNext("yAcceleration (g)",yAccelerationList,headerList,valueMap);
     addNext("zAcceleration (g)",zAccelerationList,headerList,valueMap);
