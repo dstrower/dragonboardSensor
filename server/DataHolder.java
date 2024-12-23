@@ -56,10 +56,12 @@ public class DataHolder {
   private float yAngle = 0.0F;
   private float zAngle = 0.0F;
 
-
+  private float g = 32.2F;
+  private float THOUSAND = 1000F;
 
   int count = 0;
   public void addPoint(float timeElapse, floatVector accelData, floatVector gyroData, float tempC, float tempF) {
+    timeElapse = timeElapse/THOUSAND; //Turns it into seconds
     float xAcceleration = accelData.get(0) - xOffset;
     float yAcceleration = accelData.get(1) - yOffset;
     float zAcceleration = accelData.get(2) - zOffset;
@@ -80,9 +82,9 @@ public class DataHolder {
       xAngleVelocityAverage = (xAccelerationList.get(count) + xAccelerationList.get(count-1))/2.0F;
       yAngleVelocityAverage = (yAccelerationList.get(count) + yAccelerationList.get(count-1))/2.0F;
       zAngleVelocityAverage = (zAccelerationList.get(count) + zAccelerationList.get(count-1))/2.0F;
-      xVelocityCurrent = xVelocityCurrent + xAccelerationAverage*timeElapse;
-      yVelocityCurrent = yVelocityCurrent + yAccelerationAverage*timeElapse;
-      zVelocityCurrent = zVelocityCurrent + zAccelerationAverage*timeElapse;
+      xVelocityCurrent = xVelocityCurrent + g*xAccelerationAverage*timeElapse;
+      yVelocityCurrent = yVelocityCurrent + g*yAccelerationAverage*timeElapse;
+      zVelocityCurrent = zVelocityCurrent + g*zAccelerationAverage*timeElapse;
     }
     xVelocityList.add(xVelocityCurrent);
     yVelocityList.add(yVelocityCurrent);
@@ -108,15 +110,16 @@ public class DataHolder {
     List<String> dataList = new ArrayList<>();
     List<String> headerList = new ArrayList<>();
     HashMap<String,List<Float>> valueMap = new HashMap<>();
-    addNext("xAcceleration",xAccelerationList,headerList,valueMap);
-    addNext("yAcceleration",yAccelerationList,headerList,valueMap);
-    addNext("zAcceleration",zAccelerationList,headerList,valueMap);
-    addNext("xVelocity",xVelocityList,headerList,valueMap);
-    addNext("yVelocity",yVelocityList,headerList,valueMap);
-    addNext("zVelocity",zVelocityList,headerList,valueMap);
-    addNext("xPosition",xPositionList,headerList,valueMap);
-    addNext("yPosition",yPositionList,headerList,valueMap);
-    addNext("zPosition",zPositionList,headerList,valueMap);
+    addNext("Time Elapsed (seconds)",xAccelerationList,headerList,valueMap);
+    addNext("xAcceleration (g)",xAccelerationList,headerList,valueMap);
+    addNext("yAcceleration (g)",yAccelerationList,headerList,valueMap);
+    addNext("zAcceleration (g)",zAccelerationList,headerList,valueMap);
+    addNext("xVelocity (ft/s)",xVelocityList,headerList,valueMap);
+    addNext("yVelocity (ft/s)",yVelocityList,headerList,valueMap);
+    addNext("zVelocity (ft/s)",zVelocityList,headerList,valueMap);
+    addNext("xPosition (ft)",xPositionList,headerList,valueMap);
+    addNext("yPosition (ft)",yPositionList,headerList,valueMap);
+    addNext("zPosition (ft)",zPositionList,headerList,valueMap);
     String line = null;
     for(int i =0; i < headerList.size();i++) {
       String column = headerList.get(i);

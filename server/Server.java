@@ -46,7 +46,7 @@ public class Server {
     LSM6DS3H accelerometer = parent.getAccelerometer();
     String uploadDirectory = parent.getUploadDirectory();
     System.out.println("uploadDirectory = " + uploadDirectory);
-    File myFile = new File(uploadDirectory + "accel.cvs");
+    File myFile = new File(uploadDirectory + "accel.csv");
     try {
     myFile.createNewFile();
     } catch(Exception e) {
