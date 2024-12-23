@@ -24,6 +24,7 @@ public class Server {
   private static final String SERVO = "servo";
   private static final String UPLOAD = "upload";
   private static final String RECORDER_TEST = "recorder_test";
+  private static final String RECORD = "record";
   private static final String ZERO = "zero";
   private FileUploader fileUploader = new FileUploader();
   private Recorder recorder = null;
@@ -100,6 +101,11 @@ public class Server {
                Thread thread = new Thread(fileUploader);
                thread.start();
             } else if(RECORDER_TEST.equals(line)) {
+			  recorder.setRecord(false);
+              Thread thread = new Thread(recorder);
+              thread.start();
+			} else if(RECORD.equals(line)) {
+			  recorder.setRecord(true);
               Thread thread = new Thread(recorder);
               thread.start();
             } else if(ZERO.equals(line)) {

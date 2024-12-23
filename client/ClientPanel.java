@@ -25,7 +25,7 @@ public class ClientPanel extends JPanel {
   private JButton testAccelButton;
   private JButton zeroAccelButton;
   private JButton createRecordingButton;
-
+  private float xOffset = 0.0F;
   private JButton uploadButton;
   private JButton turnOffDragonBoard;
   private JButton stopDragonBoardServer;

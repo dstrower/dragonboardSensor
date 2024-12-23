@@ -30,7 +30,7 @@ public class SocketListener implements Runnable {
     while (running) {
       try {
         String line = in.readUTF();
-        if(!line.contains("accel")) {
+        if(!line.contains("accel|")) {
           System.out.println("From socket: " + line);
           parent.getTextArea().append(line+'\n');
         } else {

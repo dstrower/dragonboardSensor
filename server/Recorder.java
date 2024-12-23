@@ -64,6 +64,7 @@ public class Recorder implements Runnable{
      LocalTime startingTime = LocalTime.now();
      int count = 0;
     long timeElapse = 0;
+	DataHolder dataHolder = new DataHolder(xOffset,yOffset,zOffset);
      while(timeElapse  < sessionLength) {
        if(count > 0) {
          LocalTime now = LocalTime.now();
@@ -73,9 +74,13 @@ public class Recorder implements Runnable{
        sensor.update();
        floatVector accelData = sensor.getAccelerometer();
        floatVector gyroData = sensor.getGyroscope();
-       String tempC = "0";
-       String tempF = "32";
-       sendDatatoClient(timeElapse,accelData,gyroData,tempC,tempF);
+       float tempC = sensor.getTemperature();
+       float tempF = sensor.getTemperature(true);
+	   if(record) {
+         dataHolder.addDataPoint(timeElapse,accelData,gyroData,tempC,tempF);
+	   } else {
+		    sendDatatoClient(timeElapse,accelData,gyroData,tempC,tempF);
+	   }
        count++;
        try {
          Thread.sleep(sleepTime);
@@ -84,8 +89,10 @@ public class Recorder implements Runnable{
        }
      }
   }
+  
+  
 
-  private void sendDatatoClient(float timeElapse, floatVector accelData, floatVector gyroData, String tempC, String tempF) {
+  private void sendDatatoClient(float timeElapse, floatVector accelData, floatVector gyroData, float tempC, float tempF) {
     String line = "time=" + timeElapse;
     float x = accelData.get(0) - xOffset;
 	float y = accelData.get(1) - yOffset;
