@@ -1,9 +1,7 @@
 package server;
 
-
-
-
 // A Java program for a Server
+
 import java.net.*;
 import java.io.File;
 import java.io.*;
@@ -13,11 +11,12 @@ import upm_lsm6ds3h.*;
 
 
 public class Server {
+
   //initialize socket and input stream
-  private Socket          socket   = null;
-  private ServerSocket    server   = null;
+  private Socket socket = null;
+  private ServerSocket server = null;
   private DataOutputStream out = null;
-  private DataInputStream in       =  null;
+  private DataInputStream in = null;
   private static final String OVER = "Over";
   private static final String SHUTDOWN = "shutdown";
   private static final String STOP_SERVER = "stopServer";
@@ -37,25 +36,25 @@ public class Server {
       throw new RuntimeException(e);
     }
   }
-  public Server(int port,StartServer parent) {
+
+  public Server(int port, StartServer parent) {
 
   }
-  // constructor with port
-  public void start(int port,StartServer parent)
 
-  {
-     LSM6DS3H accelerometer = parent.getAccelerometer();
-     recorder = new Recorder(accelerometer,this);
-     boolean loopInProcess = true;
-     Properties properties = parent.getProperties();
-     String shutdownFile = properties.getProperty("shutdownFile");
-      // starts server and waits for a connection
+  // constructor with port
+  public void start(int port, StartServer parent) {
+    LSM6DS3H accelerometer = parent.getAccelerometer();
+
+    boolean loopInProcess = true;
+    Properties properties = parent.getProperties();
+    String shutdownFile = properties.getProperty("shutdownFile");
+    // starts server and waits for a connection
     try {
       server = new ServerSocket(port);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    while(loopInProcess) {
+    while (loopInProcess) {
       try {
 
         System.out.println("Server started");
@@ -80,46 +79,44 @@ public class Server {
 
             if (OVER.equals(line)) {
               break;
-            } else if(BUZZER.equals(line))  {
+            } else if (BUZZER.equals(line)) {
               out.writeUTF("Hitting buzzer");
               parent.sendToArduino("buzzer|ON");
               TimeUnit.SECONDS.sleep(1);
               parent.sendToArduino("buzzer|OFF");
-            }
-            else if (SHUTDOWN.equals(line)) {
+            } else if (SHUTDOWN.equals(line)) {
               parent.displayMessage("Shutting down");
               createFile(shutdownFile);
               loopInProcess = false;
               break;
-            } else if(STOP_SERVER.equals(line)) {
+            } else if (STOP_SERVER.equals(line)) {
               parent.displayMessage("Server stopped.");
               loopInProcess = false;
               break;
-            } else if(line != null && line.contains(SERVO)) {
-               parent.displayMessage("Moving servos");
+            } else if (line != null && line.contains(SERVO)) {
+              parent.displayMessage("Moving servos");
               parent.sendToArduino(line);
-            } else if(UPLOAD.equals(line)) {
-               Thread thread = new Thread(fileUploader);
-               thread.start();
-            } else if(RECORDER_TEST.equals(line)) {
-			  recorder.setRecord(false);
+            } else if (UPLOAD.equals(line)) {
+              Thread thread = new Thread(fileUploader);
+              thread.start();
+            } else if (RECORDER_TEST.equals(line)) {
+              recorder.setRecord(false);
               Thread thread = new Thread(recorder);
               thread.start();
-	   } else if(RECORD.equals(line)) {
-	      String uploadDirectory = parent.getUploadDirectory();
-	      System.out.println("uploadDirectory = " + uploadDirectory);
-	      File myFile = new File(uploadDirectory + "accel.cvs");
-	      myFile.createNewFile();
-	      recorder.setRecord(true);
+            } else if (RECORD.equals(line)) {
+              String uploadDirectory = parent.getUploadDirectory();
+              System.out.println("uploadDirectory = " + uploadDirectory);
+              File myFile = new File(uploadDirectory + "accel.cvs");
+              myFile.createNewFile();
+              recorder = new Recorder(accelerometer, this, myFile);
+              recorder.setRecord(true);
               Thread thread = new Thread(recorder);
               thread.start();
-            } else if(ZERO.equals(line)) {
-               sendMessageToClient("Zeroing accelerometer.");
-	       recorder.zeroAccelerometer();
-               sendMessageToClient("Completed Zeroing accelerometer.");
-
+            } else if (ZERO.equals(line)) {
+              sendMessageToClient("Zeroing accelerometer.");
+              recorder.zeroAccelerometer();
+              sendMessageToClient("Completed Zeroing accelerometer.");
             }
-
           } catch (IOException i) {
             System.out.println(i);
             break;
@@ -140,7 +137,7 @@ public class Server {
   }
 
   private void createFile(String shutdownFile) {
-     File shutDown = new File(shutdownFile);
+    File shutDown = new File(shutdownFile);
     try {
       shutDown.createNewFile();
     } catch (IOException e) {

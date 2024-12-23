@@ -1,10 +1,17 @@
 package server;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractList;
+import java.util.List;
 
 import upm_lsm6ds3h.*;
-public class Recorder implements Runnable{
+
+public class Recorder implements Runnable {
 
   private LSM6DS3H sensor;
   private Server server;
@@ -14,89 +21,101 @@ public class Recorder implements Runnable{
   private float yOffset = 0.0F;
   private float zOffset = 0.0F;
 
+  private File recordFile;
+
   private long sessionLength = 10000;
-  public Recorder(LSM6DS3H a,Server s) {
+
+  public Recorder(LSM6DS3H a, Server s, File f) {
     this.sensor = a;
     this.server = s;
+    this.recordFile = f;
   }
-  
+
   private void resetOffsets() {
-	   xOffset = 0.0F;
-	   yOffset = 0.0F;
-	   zOffset = 0.0F;
+    xOffset = 0.0F;
+    yOffset = 0.0F;
+    zOffset = 0.0F;
   }
-  
+
   public void zeroAccelerometer() {
-	  resetOffsets();
-	  float count = 0.0F;
-	  float timeElapse = 0.0F;
-	  LocalTime startingTime = LocalTime.now();
-	  float xTotal = 0.0F;
-	  float yTotal = 0.0F;
-	  float zTotal = 0.0F;
+    resetOffsets();
+    float count = 0.0F;
+    float timeElapse = 0.0F;
+    LocalTime startingTime = LocalTime.now();
+    float xTotal = 0.0F;
+    float yTotal = 0.0F;
+    float zTotal = 0.0F;
 
-
-	  while(timeElapse  < sessionLength) {
-		  if(count > 0) {
-             LocalTime now = LocalTime.now();
-             timeElapse = ChronoUnit.MILLIS.between(startingTime, now);
-          }
-		  sensor.update();
-          floatVector accelData = sensor.getAccelerometer();
-		  xTotal = xTotal + accelData.get(0);
-		  yTotal = yTotal + accelData.get(1);
-		  zTotal = zTotal + accelData.get(2);
-		  count = count + 1;
-		  try {
-		     Thread.sleep(200);
-                  } catch (InterruptedException e) {
-                     throw new RuntimeException(e);
-                  }
-	  }
-	  xOffset = xTotal/count;
-	  yOffset = yTotal/count;
-	  zOffset = zTotal/count;	  
+    while (timeElapse < sessionLength) {
+      if (count > 0) {
+        LocalTime now = LocalTime.now();
+        timeElapse = ChronoUnit.MILLIS.between(startingTime, now);
+      }
+      sensor.update();
+      floatVector accelData = sensor.getAccelerometer();
+      xTotal = xTotal + accelData.get(0);
+      yTotal = yTotal + accelData.get(1);
+      zTotal = zTotal + accelData.get(2);
+      count = count + 1;
+      try {
+        Thread.sleep(200);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    xOffset = xTotal / count;
+    yOffset = yTotal / count;
+    zOffset = zTotal / count;
   }
 
 
   @Override
   public void run() {
-     LocalTime startingTime = LocalTime.now();
-     int count = 0;
+    LocalTime startingTime = LocalTime.now();
+    int count = 0;
     long timeElapse = 0;
-	DataHolder dataHolder = new DataHolder(xOffset,yOffset,zOffset);
-     while(timeElapse  < sessionLength) {
-       if(count > 0) {
-         LocalTime now = LocalTime.now();
-         timeElapse = ChronoUnit.SECONDS.between(startingTime, now);
-       }
-       // update our values from the sensor
-       sensor.update();
-       floatVector accelData = sensor.getAccelerometer();
-       floatVector gyroData = sensor.getGyroscope();
-       float tempC = sensor.getTemperature();
-       float tempF = sensor.getTemperature(true);
-	   if(record) {
-         dataHolder.addPoint(timeElapse,accelData,gyroData,tempC,tempF);
-	   } else {
-		    sendDatatoClient(timeElapse,accelData,gyroData,tempC,tempF);
-	   }
-       count++;
-       try {
-         Thread.sleep(sleepTime);
-       } catch (InterruptedException e) {
-         throw new RuntimeException(e);
-       }
-     }
+    DataHolder dataHolder = new DataHolder(xOffset, yOffset, zOffset);
+    while (timeElapse < sessionLength) {
+      if (count > 0) {
+        LocalTime now = LocalTime.now();
+        timeElapse = ChronoUnit.SECONDS.between(startingTime, now);
+      }
+      // update our values from the sensor
+      sensor.update();
+      floatVector accelData = sensor.getAccelerometer();
+      floatVector gyroData = sensor.getGyroscope();
+      float tempC = sensor.getTemperature();
+      float tempF = sensor.getTemperature(true);
+      if (record) {
+        dataHolder.addPoint(timeElapse, accelData, gyroData, tempC, tempF);
+      } else {
+        sendDatatoClient(timeElapse, accelData, gyroData, tempC, tempF);
+      }
+      count++;
+      try {
+        Thread.sleep(sleepTime);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    List<String> recordList = dataHolder.createDataList();
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(recordFile))) {
+      for(String line: recordList) {
+        writer.write(line);
+        writer.newLine();
+      }
+    }
+    catch (IOException ex) {
+      ex.printStackTrace();
+    }
   }
-  
-  
+
 
   private void sendDatatoClient(float timeElapse, floatVector accelData, floatVector gyroData, float tempC, float tempF) {
     String line = "time=" + timeElapse;
     float x = accelData.get(0) - xOffset;
-	float y = accelData.get(1) - yOffset;
-	float z = accelData.get(2) - zOffset;
+    float y = accelData.get(1) - yOffset;
+    float z = accelData.get(2) - zOffset;
     line = line + "," + "accelX=" + x;
     line = line + "," + "accely=" + y;
     line = line + "," + "accelz=" + z;
@@ -109,7 +128,7 @@ public class Recorder implements Runnable{
     line = line + "," + "gyroY=" + gyroData.get(1);
     line = line + "," + "gyroZ=" + gyroData.get(2);
     //System.out.println(line);
-    server.sendMessageToClient("accel|"+line);
+    server.sendMessageToClient("accel|" + line);
   }
 
   public boolean isRecord() {
