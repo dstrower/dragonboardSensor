@@ -14,7 +14,7 @@ public class Recorder implements Runnable{
   private float yOffset = 0.0F;
   private float zOffset = 0.0F;
 
-  private long sessionLength = 10;
+  private long sessionLength = 10000;
   public Recorder(LSM6DS3H a,Server s) {
     this.sensor = a;
     this.server = s;
@@ -47,7 +47,11 @@ public class Recorder implements Runnable{
 		  yTotal = yTotal + accelData.get(1);
 		  zTotal = zTotal + accelData.get(2);
 		  count = count + 1;
-		  Thread.sleep(200);
+		  try {
+		     Thread.sleep(200);
+                  } catch (InterruptedException e) {
+                     throw new RuntimeException(e);
+                  }
 	  }
 	  xOffset = xTotal/count;
 	  yOffset = yTotal/count;
