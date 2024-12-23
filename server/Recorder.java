@@ -10,11 +10,48 @@ public class Recorder implements Runnable{
   private Server server;
   private boolean record = true;
   private int sleepTime = 1000;
+  private float xOffset = 0.0F;
+  private float yOffset = 0.0F;
+  private float zOffset = 0.0F;
 
   private long sessionLength = 10;
   public Recorder(LSM6DS3H a,Server s) {
     this.sensor = a;
     this.server = s;
+  }
+  
+  private void resetOffsets() {
+	   xOffset = 0.0F;
+	   yOffset = 0.0F;
+	   zOffset = 0.0F;
+  }
+  
+  public void zeroAccelerometer() {
+	  resetOffsets();
+	  float count = 0.0F;
+	  float timeElapse = 0.0F;
+	  LocalTime startingTime = LocalTime.now();
+	  float xTotal = 0.0F;
+	  float yTotal = 0.0F;
+	  float zTotal = 0.0F;
+
+
+	  while(timeElapse  < sessionLength) {
+		  if(count > 0) {
+             LocalTime now = LocalTime.now();
+             timeElapse = ChronoUnit.MILLIS.between(startingTime, now);
+          }
+		  sensor.update();
+          floatVector accelData = sensor.getAccelerometer();
+		  xTotal = xTotal + accelData.get(0);
+		  yTotal = yTotal + accelData.get(1);
+		  zTotal = zTotal + accelData.get(2);
+		  count = count + 1;
+		  Thread.sleep(200);
+	  }
+	  xOffset = xTotal/count;
+	  yOffset = yTotal/count;
+	  zOffset = zTotal/count;	  
   }
 
 
@@ -44,11 +81,19 @@ public class Recorder implements Runnable{
      }
   }
 
-  private void sendDatatoClient(long timeElapse, floatVector accelData, floatVector gyroData, String tempC, String tempF) {
+  private void sendDatatoClient(float timeElapse, floatVector accelData, floatVector gyroData, String tempC, String tempF) {
     String line = "time=" + timeElapse;
-    line = line + "," + "accelX=" + accelData.get(0);
-    line = line + "," + "accely=" + accelData.get(1);
-    line = line + "," + "accelz=" + accelData.get(2);
+    float x = accelData.get(0) - xOffset;
+	float y = accelData.get(1) - yOffset;
+	float z = accelData.get(2) - zOffset;
+    line = line + "," + "accelX=" + x;
+    line = line + "," + "accely=" + y;
+    line = line + "," + "accelz=" + z;
+    line = line + "," + "gyroX=" + gyroData.get(0);
+    line = line + "," + "gyroY=" + gyroData.get(1);
+    line = line + "," + "gyroZ=" + gyroData.get(2);
+    line = line + "," + "tempC=" + tempC.toString();
+    line = line + "," + "tempF=" + tempF.toString();
     line = line + "," + "gyroX=" + gyroData.get(0);
     line = line + "," + "gyroY=" + gyroData.get(1);
     line = line + "," + "gyroZ=" + gyroData.get(2);

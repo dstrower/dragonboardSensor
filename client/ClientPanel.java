@@ -23,6 +23,9 @@ public class ClientPanel extends JPanel {
   private JButton testBuzzerButton;
   private JButton testServosButton;
   private JButton testAccelButton;
+  private JButton zeroAccelButton;
+  private JButton createRecordingButton;
+
   private JButton uploadButton;
   private JButton turnOffDragonBoard;
   private JButton stopDragonBoardServer;
@@ -31,7 +34,9 @@ public class ClientPanel extends JPanel {
   Thread thread = null;
   private JPanel textPanel;
 
+
   private JTextArea textArea;
+  private JTextArea accelTextArea;
   private ClientFrame clientFrame;
 
   public ClientPanel(ClientFrame cf) {
@@ -49,7 +54,7 @@ public class ClientPanel extends JPanel {
     panel.setLayout(new GridLayout(3, 1));
     panel.add(ipAddressPanel, BorderLayout.NORTH);
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(9,1));
+    buttonPanel.setLayout(new GridLayout(11,1));
     ConnectListener connectListener = new ConnectListener(this);
     DisconnectListener disconnectListener = new DisconnectListener(this);
     ShutdownListener shutdownListener = new ShutdownListener(this);
@@ -64,7 +69,12 @@ public class ClientPanel extends JPanel {
     ServoListener servoListener = new ServoListener(this);
     testServosButton = addButton("Test Servos",servoListener,buttonPanel,false);
     TestAccelListener testAccelListener = new TestAccelListener(this);
+    accelTextArea = testAccelListener.getTextArea();
     testAccelButton = addButton("Test Accelerometer", testAccelListener, buttonPanel, false);
+    ZeroAccelListener zeroAccelListener = new ZeroAccelListener(this);
+    zeroAccelButton = addButton("Zero Accelerometer", zeroAccelListener, buttonPanel, false);
+    RecordAccelListener recordAccelListener = new RecordAccelListener(this);
+    createRecordingButton = addButton("Make Recording", recordAccelListener, buttonPanel, false);
     turnOffDragonBoard = addButton("Turn off DragonBoard", shutdownListener, buttonPanel, false);
     StopServerListener stopServerListener = new StopServerListener(this);
     stopDragonBoardServer = addButton("Stop DragonBoard Server", stopServerListener, buttonPanel, false);
@@ -90,6 +100,8 @@ public class ClientPanel extends JPanel {
     testBuzzerButton.setEnabled(true);
     testServosButton.setEnabled(true);
     testAccelButton.setEnabled(true);
+    zeroAccelButton.setEnabled(true);
+    createRecordingButton.setEnabled(true);
     turnOffDragonBoard.setEnabled(true);
     stopDragonBoardServer.setEnabled(true);
     socketListener = new SocketListener(this);
@@ -105,6 +117,8 @@ public class ClientPanel extends JPanel {
     testBuzzerButton.setEnabled(false);
     testServosButton.setEnabled(false);
     testAccelButton.setEnabled(false);
+    createRecordingButton.setEnabled(false);
+    zeroAccelButton.setEnabled(false);
     turnOffDragonBoard.setEnabled(false);
     stopDragonBoardServer.setEnabled(false);
   }
@@ -127,5 +141,9 @@ public class ClientPanel extends JPanel {
 
   public JTextArea getTextArea() {
     return textArea;
+  }
+
+  public JTextArea getAccelTextArea() {
+    return accelTextArea;
   }
 }

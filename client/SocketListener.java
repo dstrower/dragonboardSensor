@@ -4,8 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
+import java.util.StringTokenizer;
 
 public class SocketListener implements Runnable {
 
@@ -31,12 +30,31 @@ public class SocketListener implements Runnable {
     while (running) {
       try {
         String line = in.readUTF();
-        System.out.println("From socket: " + line);
-        parent.getTextArea().append(line+'\n');
+        if(!line.contains("accel")) {
+          System.out.println("From socket: " + line);
+          parent.getTextArea().append(line+'\n');
+        } else {
+          line = formatLine(line);
+          parent.getAccelTextArea().append(line + '\n');
+        }
+
       } catch (IOException e) {
         running = false;
       }
     }
+  }
+
+  private String formatLine(String line) {
+    StringTokenizer st = new StringTokenizer(line,"|");
+    String firstPart = st.nextToken();
+    String secondPart = st.nextToken();
+    StringTokenizer accelToken = new StringTokenizer(secondPart,",");
+    String time = accelToken.nextToken();
+    String x = accelToken.nextToken();
+    String y = accelToken.nextToken();
+    String z = accelToken.nextToken();
+    String formattedLine =  x + " " + y +" " +  z;
+    return formattedLine;
   }
 
   public void stopThread() {
