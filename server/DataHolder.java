@@ -104,6 +104,9 @@ public class DataHolder {
     xAngle = xAngle + xAngleVelocityAverage*deltaTime;
     yAngle = yAngle + yAngleVelocityAverage*deltaTime;
     zAngle = zAngle + zAngleVelocityAverage*deltaTime;
+    xAngleList.add(xAngle);
+    yAngleList.add(yAngle);
+    zAngleList.add(zAngle);
     count++;
   }
 
