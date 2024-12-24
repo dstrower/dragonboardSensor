@@ -26,7 +26,7 @@ public class Server {
   private static final String RECORDER_TEST = "recorder_test";
   private static final String RECORD = "record";
   private static final String ZERO = "zero";
-  private FileUploader fileUploader = new FileUploader();
+  private FileUploader fileUploader;
   private Recorder recorder = null;
 
   public void sendMessageToClient(String message) {
@@ -46,7 +46,7 @@ public class Server {
     LSM6DS3H accelerometer = parent.getAccelerometer();
     String uploadDirectory = parent.getUploadDirectory();
     System.out.println("uploadDirectory = " + uploadDirectory);
-
+    fileUploader = new FileUploader(uploadDirectory);
     CreateNewFile createNewFile = new CreateNewFile(uploadDirectory);
     recorder = new Recorder(accelerometer, this);
     boolean loopInProcess = true;
