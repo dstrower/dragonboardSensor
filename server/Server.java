@@ -46,12 +46,9 @@ public class Server {
     LSM6DS3H accelerometer = parent.getAccelerometer();
     String uploadDirectory = parent.getUploadDirectory();
     System.out.println("uploadDirectory = " + uploadDirectory);
-    File myFile = new File(uploadDirectory + "accel.csv");
-    try {
-    myFile.createNewFile();
-    } catch(Exception e) {
-    }
-    recorder = new Recorder(accelerometer, this, myFile);
+
+    CreateNewFile createNewFile = new CreateNewFile(uploadDirectory);
+    recorder = new Recorder(accelerometer, this);
     boolean loopInProcess = true;
     Properties properties = parent.getProperties();
     String shutdownFile = properties.getProperty("shutdownFile");
@@ -111,6 +108,8 @@ public class Server {
               Thread thread = new Thread(recorder);
               thread.start();
             } else if (RECORD.equals(line)) {
+              File accelerationFile = createNewFile.createFile();
+              recorder.setRecordFile(accelerationFile);
               recorder.setRecord(true);
               Thread thread = new Thread(recorder);
               thread.start();

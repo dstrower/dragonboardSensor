@@ -121,6 +121,12 @@ public class DataHolder {
     addNext("xPosition (ft)",xPositionList,headerList,valueMap);
     addNext("yPosition (ft)",yPositionList,headerList,valueMap);
     addNext("zPosition (ft)",zPositionList,headerList,valueMap);
+    addNext("xAngle Velocity d/s",xAngleVelocityList,headerList,valueMap);
+    addNext("yAngle Velocity d/s",yAngleVelocityList,headerList,valueMap);
+    addNext("zAngle Velocity d/s",zAngleVelocityList,headerList,valueMap);
+    addNext("xAngle Angle d",xAngleList,headerList,valueMap);
+    addNext("yAngle Angle d",yAngleList,headerList,valueMap);
+    addNext("zAngle Angle d",zAngleList,headerList,valueMap);
     String line = null;
     for(int i =0; i < headerList.size();i++) {
       String column = headerList.get(i);

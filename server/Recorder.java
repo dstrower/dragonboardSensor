@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.AbstractList;
 import java.util.List;
 
 import upm_lsm6ds3h.*;
@@ -25,10 +24,9 @@ public class Recorder implements Runnable {
 
   private long sessionLength = 10000;
 
-  public Recorder(LSM6DS3H a, Server s, File f) {
+  public Recorder(LSM6DS3H a, Server s) {
     this.sensor = a;
     this.server = s;
-    this.recordFile = f;
   }
 
   private void resetOffsets() {
@@ -102,7 +100,7 @@ public class Recorder implements Runnable {
     System.out.println("Finished recording session.");
     List<String> recordList = dataHolder.createDataList();
     System.out.println("The size of the dataList is: " + recordList.size());
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(recordFile))) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(getRecordFile()))) {
       for(String line: recordList) {
         writer.write(line);
         writer.newLine();
@@ -156,5 +154,13 @@ public class Recorder implements Runnable {
 
   public void setSessionLength(long sessionLength) {
     this.sessionLength = sessionLength;
+  }
+
+  public File getRecordFile() {
+    return recordFile;
+  }
+
+  public void setRecordFile(File recordFile) {
+    this.recordFile = recordFile;
   }
 }
