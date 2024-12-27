@@ -31,7 +31,9 @@ public class Server {
 
   public void sendMessageToClient(String message) {
     try {
-      out.writeUTF(message);
+      if(out != null) {
+        out.writeUTF(message);
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
