@@ -63,6 +63,7 @@ public class ArduinoSerial implements Arduino, Runnable {
           String line = new String(b,StandardCharsets.UTF_8);
           System.out.println("From Arduino: " + line);
           arduinoButtonListener.sendMessageToClient(line);
+	  running = false;
         }
 
       } catch (IOException e) {
