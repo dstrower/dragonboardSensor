@@ -1,4 +1,9 @@
 package server;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -6,11 +11,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 public class FileUploader implements Runnable {
 
   private String directory;

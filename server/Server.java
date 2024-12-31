@@ -25,9 +25,12 @@ public class Server {
   private static final String UPLOAD = "upload";
   private static final String RECORDER_TEST = "recorder_test";
   private static final String RECORD = "record";
+
   private static final String ZERO = "zero";
   private FileUploader fileUploader;
   private Recorder recorder = null;
+  private StartServer parent;
+  private CreateNewFile createNewFile;
 
   public void sendMessageToClient(String message) {
     try {
@@ -39,17 +42,22 @@ public class Server {
     }
   }
 
+  public void displayMessage(String message) {
+    parent.displayMessage(message);
+  }
+
   public Server(int port, StartServer parent) {
 
   }
 
   // constructor with port
-  public void start(int port, StartServer parent) {
+  public void start(int port, StartServer p) {
+    this.parent = p;
     LSM6DS3H accelerometer = parent.getAccelerometer();
     String uploadDirectory = parent.getUploadDirectory();
     System.out.println("uploadDirectory = " + uploadDirectory);
     fileUploader = new FileUploader(uploadDirectory);
-    CreateNewFile createNewFile = new CreateNewFile(uploadDirectory);
+    createNewFile = new CreateNewFile(uploadDirectory);
     recorder = new Recorder(accelerometer, this);
     boolean loopInProcess = true;
     Properties properties = parent.getProperties();
@@ -86,10 +94,7 @@ public class Server {
             if (OVER.equals(line)) {
               break;
             } else if (BUZZER.equals(line)) {
-              out.writeUTF("Hitting buzzer");
-              parent.sendToArduino("buzzer|ON");
-              TimeUnit.SECONDS.sleep(1);
-              parent.sendToArduino("buzzer|OFF");
+              buzzer();
             } else if (SHUTDOWN.equals(line)) {
               parent.displayMessage("Shutting down");
               createFile(shutdownFile);
@@ -106,18 +111,14 @@ public class Server {
               Thread thread = new Thread(fileUploader);
               thread.start();
             } else if (RECORDER_TEST.equals(line)) {
-              recorder.setRecord(false);
-              Thread thread = new Thread(recorder);
+              getRecorder().setRecord(false);
+              Thread thread = new Thread(getRecorder());
               thread.start();
             } else if (RECORD.equals(line)) {
-              File accelerationFile = createNewFile.createFile();
-              recorder.setRecordFile(accelerationFile);
-              recorder.setRecord(true);
-              Thread thread = new Thread(recorder);
-              thread.start();
+              makeRecording();
             } else if (ZERO.equals(line)) {
               sendMessageToClient("Zeroing accelerometer.");
-              recorder.zeroAccelerometer();
+              getRecorder().zeroAccelerometer();
               sendMessageToClient("Completed Zeroing accelerometer.");
             }
           } catch (IOException i) {
@@ -139,6 +140,21 @@ public class Server {
     System.exit(0);
   }
 
+
+  public void buzzer() throws IOException, InterruptedException {
+    out.writeUTF("Hitting buzzer");
+    parent.sendToArduino("buzzer|ON");
+    TimeUnit.SECONDS.sleep(1);
+    parent.sendToArduino("buzzer|OFF");
+  }
+
+  public void makeRecording() {
+    File accelerationFile = createNewFile.createFile();
+    getRecorder().setRecordFile(accelerationFile);
+    getRecorder().setRecord(true);
+    Thread thread = new Thread(getRecorder());
+    thread.start();
+  }
   private void createFile(String shutdownFile) {
     File shutDown = new File(shutdownFile);
     try {
@@ -146,5 +162,9 @@ public class Server {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public Recorder getRecorder() {
+    return recorder;
   }
 }
