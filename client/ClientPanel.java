@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,8 +39,11 @@ public class ClientPanel extends JPanel {
   private JTextArea textArea;
   private JTextArea accelTextArea;
   private ClientFrame clientFrame;
+  private String downloadDirectory;
 
   public ClientPanel(ClientFrame cf) {
+    Properties properties = getProperties();
+    downloadDirectory = properties.getProperty("downloadDirectory");
     setLayout(new BorderLayout());
     this.clientFrame =  cf;
     JPanel ipAddressPanel = new JPanel();
@@ -145,5 +149,19 @@ public class ClientPanel extends JPanel {
 
   public JTextArea getAccelTextArea() {
     return accelTextArea;
+  }
+
+  public Properties getProperties() {
+    Properties prop = new Properties();
+    try {
+      prop.load(ClientPanel.class.getClassLoader().getResourceAsStream("dragonboardClient.properties"));
+    } catch (IOException e) {
+      System.out.println("Exception: "+e);
+    }
+    return prop;
+  }
+
+  public String getDownloadDirectory() {
+    return downloadDirectory;
   }
 }

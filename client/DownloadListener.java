@@ -16,15 +16,8 @@ public class DownloadListener implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    Socket socket = parent.getSocket();
-    DataOutputStream out = null;
-    try {
-      out = new DataOutputStream(
-          socket.getOutputStream());
-
-    } catch (IOException i) {
-      System.out.println(i);
-      return;
-    }
+    FileDownloader fileDownloader = new FileDownloader(parent);
+    Thread thread = new Thread(fileDownloader);
+    thread.start();
   }
 }
