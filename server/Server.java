@@ -142,7 +142,9 @@ public class Server {
 
 
   public void buzzer() throws IOException, InterruptedException {
-    out.writeUTF("Hitting buzzer");
+    if(out != null) {
+       out.writeUTF("Hitting buzzer");
+    }
     parent.sendToArduino("buzzer|ON");
     TimeUnit.SECONDS.sleep(1);
     parent.sendToArduino("buzzer|OFF");
