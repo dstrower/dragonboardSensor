@@ -25,21 +25,25 @@ public class ArduinoButtonListener {
   }
 
   public void sendMessageToClient(String message) {
-    displayMessage("Waiting 5 seconds");
-    try {
-      TimeUnit.SECONDS.sleep(5);
-      displayMessage("Zeroing accelerometer.");
-      server.getRecorder().zeroAccelerometer();
-      buzzer();
-      //recorder.zeroAccelerometer();
-      makeRecording();
-      displayMessage("Completed recording.");
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+	if(message.contains("Button|On")) {
+		displayMessage("Waiting 5 seconds");
+		try {
+		  TimeUnit.SECONDS.sleep(5);
+		  displayMessage("Zeroing accelerometer.");
+		  server.getRecorder().zeroAccelerometer();
+		  buzzer();
+		  //recorder.zeroAccelerometer();
+		  makeRecording();
+		  displayMessage("Completed recording.");
+		} catch (InterruptedException e) {
+		  throw new RuntimeException(e);
+		} catch (IOException e) {
+		  throw new RuntimeException(e);
+		}
+	}
+	else {
     server.sendMessageToClient(message);
+	}
   }
 
 }
