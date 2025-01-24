@@ -153,6 +153,7 @@ public class Server {
   public void makeRecording() {
     File accelerationFile = createNewFile.createFile();
     getRecorder().setRecordFile(accelerationFile);
+	getRecorder().setSleepTime(100);
     getRecorder().setRecord(true);
     Thread thread = new Thread(getRecorder());
     thread.start();
